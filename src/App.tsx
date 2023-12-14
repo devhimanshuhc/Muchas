@@ -10,7 +10,7 @@ export default function App() {
         <main className="flex h-screen">
             <Routes>
                 <Route element={<AuthLayout />} >
-                    <Route path="/merchantsignup" element={<MerchantSignup/>}/>
+                    <Route index path="/merchantsignup" element={<MerchantSignup/>}/>
                     <Route path="/signin" element={<Signin />} />
                 </Route>
             </Routes>
