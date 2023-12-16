@@ -2,7 +2,7 @@ import {
     Client,
     Account,
     Databases,
-    Storage,
+    // Storage,
     Avatars,
 } from "appwrite"
 
