@@ -6,14 +6,13 @@ export default function Home() {
 
     return (
         <div className="m-2 rounded-xl px-2 py-1 w-full max-h-[20vh] bg-slate-500 text-black text-xl flex-center">
-            <div className="mr-4">
-                {user.avatar ? <img src={user.avatar} alt="user's avatar" className="rounded-md"/> : <User color="#1b263b" width={48} height={48}/>}
+            <div>
+                {user.avatar ? <img src={user.avatar} alt="user's avatar" className="rounded-md flex-grow-[2]"/> : <User color="#1b263b" width={48} height={48}/>}
             </div>
-            <div className="p-2">
+            <div className="p-2 max-w-[70%] overflow-hidden text-ellipsis">
                 <p>{user.username || "username here"}</p>
-                <p className="text-muted">{user.email || "user's email here"}</p>
+                <a href={`mailto:${user.email}`} className="text-muted">{user.email || "user's email here"}</a>
             </div>
-
         </div>
     )
 }
