@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
+import { useUserContext } from "@/contexts/AuthContext"
 import { useCreateUserSessionMutation } from "@/lib/query/queries"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 // => what my signin form looks like.
@@ -27,15 +29,42 @@ export default function Signin() {
         }
     })
 
-    const {mutateAsync: createEmailSession, isPending: isCreating} = useCreateUserSessionMutation()
+    const { toast } = useToast()
+    const navigate = useNavigate()
 
-    /*  TODO: 
-     handle form submition.
-    */
-    async function onSubmit(formData: signinFormData) { 
-        console.log(formData)
+    const { checkUserAuth } = useUserContext()
+    const { mutateAsync: createEmailSession, isPending: isCreating } = useCreateUserSessionMutation()
+
+    async function onSubmit(formData: signinFormData) {
+
         const session = await createEmailSession(formData)
-        
+
+        if (!session) {
+            toast({
+                title: "Oops, login snag!😫",
+                description: "There seems to be a hiccup with your username or password. Please double-check and try again.",
+            })
+            return null
+        }
+
+        let userAuthStatus = await checkUserAuth()
+        console.log(userAuthStatus)
+
+        if (userAuthStatus) {
+            toast({
+                title: "💥 Boom! You're Logged In! 💥",
+                description: "Get ready to make a whole lotta money💰!",
+            })
+            form.reset
+            navigate("/")
+        } else {
+
+            toast({
+                title: "Oops, login snag!😫",
+                description: "There seems to be a hiccup with your username or password. Please double-check and try again.",
+            })
+            return null
+        }
     }
 
     return (
@@ -70,19 +99,14 @@ export default function Signin() {
                 />
 
                 <Button variant="outline" className="mt-4 mx-auto font-bold text-xl" type="submit" >
-                    {/* 
-                     TODO: 
-                     add a state checkpoint for responsiveness while submitting the form.
-                    */}
-                    {/* {isCreatingMerchant ? "Creating..." : "Signup"} */}
-                    Signin
+                    {isCreating ? "Signing..." : "Signin"}
                 </Button>
 
                 <p className="mt-2 text-sm font-thin">
                     Don't 've an Account?
                     {/* 
                      TODO: 
-                     got to add a onboard page to the link.
+                     got to add a onboard page to the link.rn im doing it with merchantsignup.
                     */}
                     <Link to="/merchantsignup" className="text-green-600 text-xl ml-2 underline font-semibold">
                         Signup
@@ -101,3 +125,4 @@ export default function Signin() {
  ✅ lay down your tsx using shad-cn components.
  ✅ handle submit using onSubmit in your form defination and put it on appwrite cloud.
 */
+

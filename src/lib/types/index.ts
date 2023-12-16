@@ -10,3 +10,16 @@ export type SessionCredsTyp = {
     email: string,
     password: string,
 }
+
+//  DEFAULTS:  this is the universal or global type.
+// [ Merchant Ac , User Ac ] these're pruned types derieved from this base type.
+export type GlobalUserAc = {
+    username: string,
+    phNo?: number,
+    email: string,
+    avatar: string,
+    isMerchant?: boolean,
+    accountId: string,
+    location: string[],
+}
+

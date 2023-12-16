@@ -23,13 +23,14 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCreateMerchantAcMutation, useCreateUserSessionMutation, useGetCurrentUser } from "@/lib/query/queries";
-import { Link } from "react-router-dom";
+import { useCreateMerchantAcMutation, useCreateUserSessionMutation } from "@/lib/query/queries";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastAction } from "@/components/ui/toast";
+import { useUserContext } from "@/contexts/AuthContext";
 
 // => whats my formData looks like and how to know whether its valid or not.
 const formSchema = z.object({
-    username: z.string({ required_error: "username is required." }),
+    username: z.string().min(5, { message: "username is required." }),
     email: z.string().email(),
     password: z.string().min(8, { message: "password must be atleast 8 characters." }),
     phNo: z.coerce.number().min(10, { message: "phone number got to be atleast 10 digits long." }),
@@ -45,6 +46,9 @@ const formSchema = z.object({
 type merchantFormData = z.infer<typeof formSchema>
 
 export default function MerchantSignup() {
+
+    const navigate = useNavigate()
+
     const form = useForm<merchantFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -60,53 +64,26 @@ export default function MerchantSignup() {
     const { toast } = useToast()
 
     const { mutateAsync: createMerchantAc, isPending: isCreatingMerchant } = useCreateMerchantAcMutation()
-    const {mutateAsync: createEmailSession, isPending: isCreatingSession } = useCreateUserSessionMutation()
-    
+    const { mutateAsync: createEmailSession, isPending: isCreatingSession } = useCreateUserSessionMutation()
+    const { checkUserAuth } = useUserContext()
 
     async function onSubmit(formData: merchantFormData) {
 
+        /* 
+         WORKFLOW: 
+         1. we gon init a variable named ac and populate depending on the location prop.
+         2. then make ac go throught all of the checkpoints globally.
+        */
+
+        let ac: unknown
+
         if (formData.location === "currentLocation") {
             async function successCall(position: GeolocationPosition) {
+
                 const { latitude: lat, longitude: lng } = position.coords
                 formData.location = [String(lng), String(lat)]
-                console.log(formData)
-                const ac = await createMerchantAc({
+                ac = await createMerchantAc({
                     ...formData,
-                })
-
-                if (!ac) {
-                    toast({
-                        title: "🚨 Something went wrong!!",
-                        description: "make sure you re connected to internet and 've entered correct info.",
-                        action: <ToastAction altText="Try again">Try again</ToastAction>,
-                    })
-
-                    return null
-                }
-
-                // since we've created an Ac, next we got to signin into the newly created Ac.
-                const session = await createEmailSession({
-                    email: formData.email,
-                    password: formData.password,
-                })
-
-                if (!session) {
-                    toast({
-                        title: "🚨 Something went wrong!!",
-                        description: "make sure you re connected to internet and 've entered correct info.",
-                        action: <ToastAction altText="Try again">Try again</ToastAction>,
-                    })
-
-                    return null
-                }
-
-                //  TODO:  user auth checkpoint.
-
-
-                toast({
-                    title: "Merchant Account created 😃",
-                    description: "Go ahead and create offers ⭐ to attract more customers.",
-                    action: <ToastAction altText="Create an offer">Create an Offer</ToastAction>
                 })
 
             }
@@ -117,12 +94,61 @@ export default function MerchantSignup() {
 
             navigator.geolocation.getCurrentPosition(successCall, errorCall)
         } else {
-            console.log(formData)
-            const ac = await createMerchantAc({
+
+            ac = await createMerchantAc({
                 ...formData,
             })
+            
+        }
+
+        if (!ac) {
+            toast({
+                title: "🚨 Something went wrong!!",
+                description: "make sure you re connected to internet and 've entered correct info.",
+                action: <ToastAction altText="Try again">Try again</ToastAction>,
+            })
+
+            return null
+        }
+
+        // since we've created an Ac, next we got to signin into the newly created Ac.
+        const session = await createEmailSession({
+            email: formData.email,
+            password: formData.password,
+        })
+
+        if (!session) {
+            toast({
+                title: "🚨 Something went wrong!!",
+                description: "make sure you re connected to internet and 've entered correct info.",
+                action: <ToastAction altText="Try again">Try again</ToastAction>,
+            })
+
+            return null
+        }
+
+        let userAuthStatus = await checkUserAuth()
+
+        if (userAuthStatus) {
+            
+            toast({
+                title: "Merchant Account created 😃",
+                description: "Go ahead and create offers ⭐ to attract more customers.",
+                action: <ToastAction altText="Create an offer">Create an Offer</ToastAction>
+            })
+            form.reset
+            navigate("/")
+
+        } else {
+            
+            toast({
+                title: "Oops, login snag!😫",
+                description: "There seems to be a hiccup with your username or password. Please double-check and try again.",
+            })
+            return null
 
         }
+
     }
 
     return (
@@ -219,7 +245,7 @@ export default function MerchantSignup() {
                 />
 
                 <Button variant="outline" className="mt-4 mx-auto font-bold text-xl" type="submit" >
-                    {isCreatingMerchant ? "Creating..." : "Signup"}
+                    {(isCreatingMerchant || isCreatingSession) ? "Creating..." : "Signup"}
                 </Button>
                 <p className="mt-2 text-sm font-thin">
                     Already 've got a Merchant Account?
