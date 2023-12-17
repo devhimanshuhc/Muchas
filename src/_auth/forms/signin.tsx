@@ -56,7 +56,7 @@ export default function Signin() {
       return null;
     }
 
-    // let userAuthStatus = await checkUserAuth();
+    let userAuthStatus = await checkUserAuth();
     console.log(userAuthStatus);
 
     if (userAuthStatus) {

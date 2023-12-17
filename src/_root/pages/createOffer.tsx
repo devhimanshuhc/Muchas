@@ -51,45 +51,15 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
   TODO
   */
   const handleSubmit = async (value: z.infer<typeof offerSchema>) => {};
-  // ACTION = UPDATE;
-  // if (post && action === "Update") {
-  //   const updatedPost = await updatePost({
-  //     ...value,
-  //     postId: post.$id,
-  //     imageId: post.imageId,
-  //     imgUrl: post.imageUrl,
-  //   });
-
-  //   if (!updatedPost) {
-  //     toast({
-  //       title: `${action} post failed. Please try again.`,
-  //     });
-  //   }
-  //   return navigate(`/posts/${post.$id}`);
-  // }
-
-  // // ACTION = CREATE
-  // const newPost = await createPost({
-  //   ...value,
-  //   userId: usr.id,
-  // });
-
-  //     if (!newPost) {
-  //       toast({
-  //         title: `${action} post failed. Please try again.`,
-  //       });
-  //     }
-  //     navigate("/");
-  //   };
 
   return (
     <div className="flex flex-1">
-      <div className="common-container">
+      <div className="flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:px-8 lg:p-14">
         <div className="max-w-5xl flex-start gap-3 justify-start w-full mt-10 md:mt-0">
           <div className="flex flex-row justify-start items-start mb-5">
             <img src={add} width={40} height={30} alt="add" loading="lazy" />
             <h2 className="h3-bold md:h2-bold text-left justify-center w-full text-4xl pl-2">
-              Create Post
+              Create Offer
             </h2>
           </div>
 
@@ -103,9 +73,7 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
                 name="offerDescription"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-md bg-[#0d0d0d]">
-                      Description
-                    </FormLabel>
+                    <FormLabel className="text-md">Description</FormLabel>
                     <FormControl>
                       <Textarea className="bg-[#0d0d0d]" {...field} />
                     </FormControl>
@@ -129,57 +97,14 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="shad-form_label">Add Location</FormLabel>
-                <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
-                </FormControl>
-                <FormMessage className="shad-form_message" />
-              </FormItem>
-            )}
-          /> */}
-              {/* <FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="shad-form_label">
-                  Add Tags (separated by comma " , ")
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Art, Expression, Learn"
-                    type="text"
-                    className="shad-input"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="shad-form_message" />
-              </FormItem>
-            )}
-          /> */}
 
               {/*TODO */}
 
               <div className="flex gap-4 items-center justify-end">
-                <Button
-                  type="button"
-                  className=""
-                  //   onClick={() => navigate(-1)}
-                >
+                <Button type="button" variant="outline" className="">
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  className=" whitespace-nowrap"
-                  //   disabled={isLoadingCreate || isLoadingUpdate}
-                >
-                  {/* {(isLoadingCreate || isLoadingUpdate) && <ButtonLoader />} */}
-                  {/* {action} */}
+                <Button type="submit" variant="outline">
                   Post
                 </Button>
               </div>
