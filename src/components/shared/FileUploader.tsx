@@ -32,7 +32,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
   return (
     <div
       {...getRootProps()}
-      className="flex flex-center flex-col bg-[#0d0d0d] rounded-xl cursor-pointer"
+      className="flex flex-center flex-col rounded-xl cursor-pointer"
     >
       <input {...getInputProps()} className="cursor-pointer" />
 
@@ -49,7 +49,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
           <p className="file_uploader-label">Click or drag photo to replace</p>
         </>
       ) : (
-        <div className="file_uploader-box mx-auto my-4 text-center">
+        <div className=" mx-auto my-4 text-center">
           <img
             loading="lazy"
             src="../../../public/assets/icons/file-upload.svg"
@@ -63,11 +63,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
           </h3>
           <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="shad-button_dark_4"
-          >
+          <Button type="button" variant="outline">
             Select from computer
           </Button>
         </div>

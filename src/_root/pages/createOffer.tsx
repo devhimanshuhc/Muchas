@@ -75,9 +75,9 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
                   <FormItem>
                     <FormLabel className="text-md">Description</FormLabel>
                     <FormControl>
-                      <Textarea className="bg-[#0d0d0d]" {...field} />
+                      <Textarea {...field} />
                     </FormControl>
-                    <FormMessage className="" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
