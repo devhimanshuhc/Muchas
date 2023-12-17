@@ -23,3 +23,11 @@ export type GlobalUserAc = {
     location: string[],
 }
 
+
+export type OfferTyp = {
+    creator: string,
+    offerBanner: string,
+    offerDescription: string,
+}
+
+

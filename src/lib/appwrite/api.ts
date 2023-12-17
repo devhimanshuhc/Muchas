@@ -1,5 +1,5 @@
 import { ID, Query } from "appwrite";
-import { MerchantAcFormDataTyp, SessionCredsTyp } from "../types";
+import { MerchantAcFormDataTyp, OfferTyp, SessionCredsTyp } from "../types";
 import { account, appwriteConfig, avatars, databases } from "./config";
 
 export async function createMerchantAc(merchant: MerchantAcFormDataTyp) {
@@ -88,4 +88,6 @@ export async function getCurrentUser() {
     }
 }
 
-
+export async function createOffer(offer: OfferTyp) {
+    
+}

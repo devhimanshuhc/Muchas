@@ -265,3 +265,4 @@ export default function MerchantSignup() {
  ✅ lay down your tsx using shad-cn components.
  ✅ handle submit using onSubmit in your form defination and put it on appwrite cloud.
 */
+

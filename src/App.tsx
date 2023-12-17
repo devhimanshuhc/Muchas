@@ -4,7 +4,7 @@ import AuthLayout from "./_auth/AuthLayout"
 import MerchantSignup from "./_auth/forms/MerchantSignup"
 import { Toaster } from "./components/ui/toaster"
 import Signin from "./_auth/forms/signin"
-import Home from "./_root/Home"
+import Home from "./_root/pages/Home"
 
 export default function App() {
     return (
@@ -14,7 +14,6 @@ export default function App() {
                     <Route element={<AuthLayout />} >
                         <Route path="/merchantsignup" element={<MerchantSignup />} />
                         <Route path="/signin" element={<Signin />} />
-
                     </Route>
 
                     <Route index path="/" element={<Home />} />
