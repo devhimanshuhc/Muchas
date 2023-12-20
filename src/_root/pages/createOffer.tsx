@@ -1,6 +1,25 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import * as z from "zod";
+import { Models } from "appwrite";
+
+import { useNavigate } from "react-router-dom";
+// import { offerSchema } from "@/lib/validation";
+// import { useToast } from "@/components/ui/use-toast";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FileUploader from "@/components/shared/FileUploader";
+import { Textarea } from "@/components/ui/textarea";
+import add from "../../../public/assets/icons/gallery-add.svg";
 
 const offerSchema = z.object({
   offerDescription: z.string().max(1500, {
