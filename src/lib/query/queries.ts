@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MerchantAcFormDataTyp, SessionCredsTyp } from "../types";
-import { createEmailSession, createMerchantAc, getCurrentUser } from "../appwrite/api";
+import { MerchantAcFormDataTyp, OfferTyp, SessionCredsTyp } from "../types";
+import { createEmailSession, createMerchantAc, createOffer, getCurrentUser } from "../appwrite/api";
 import { queryKeys } from "./queryKeys";
 
 export function useCreateMerchantAcMutation() {
@@ -32,4 +32,22 @@ export function useGetCurrentUser() {
         queryKey: [queryKeys.GET_CURRENT_USER],
         queryFn: getCurrentUser,
     })
+}
+
+export function useCreateOffersMutation() {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (offer: OfferTyp) => (createOffer(offer)),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: [queryKeys.GET_OFFERS]
+            })
+        }
+    })
+
+    /*
+    WORKFLOW: 
+    ✅ we gon create a offer.
+    ✅ cuz we've just created a offer, we need to revalidate the query to display the newly created offer in the profile and wherever its used.
+    */
 }

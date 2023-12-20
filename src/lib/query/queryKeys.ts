@@ -5,4 +5,6 @@ export enum queryKeys {
 
     // doc retrieval
     GET_CURRENT_USER = "getCurrentUser",
+    GET_OFFERS = "getoffers"
+
 }

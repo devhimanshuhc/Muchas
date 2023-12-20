@@ -26,7 +26,18 @@ export type GlobalUserAc = {
 
 export type OfferTyp = {
     creator: string,
-    offerBanner: string,
+    offerBanner: File[],
+    offerDescription: string,
+}
+
+/* 
+ NOTE: 
+ this type is just for TSC to infer and let the programmer go.
+*/
+export type OfferTyp4Tsinference = {
+    $id: string,
+    creator: string,
+    offerBanner: File[],
     offerDescription: string,
 }
 
