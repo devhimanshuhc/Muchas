@@ -8,6 +8,7 @@ import Home from "./_root/pages/Home";
 import CreateOffer from "./_root/pages/createOffer";
 import UserSignup from "./_auth/forms/UserSignup";
 import { RoleSelect } from "./_auth/forms/RoleSelect";
+import PaymentMethodsCard from "./_auth/forms/paymentMethod";
 
 export default function App() {
   return (
@@ -22,7 +23,8 @@ export default function App() {
           </Route>
 
           <Route index path="/" element={<Home />} />
-          <Route index path="/createoffer" element={<CreateOffer />} />
+          <Route path="/createoffer" element={<CreateOffer action="Create" />} />
+          <Route path="/payment" element={<PaymentMethodsCard />} />
         </Routes>
       </main>
       <Toaster />

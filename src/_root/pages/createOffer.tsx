@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FileUploader from "@/components/shared/FileUploader";
@@ -68,6 +69,7 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
               //   onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-col gap-9 w-full  max-w-5xl"
             >
+              
               <FormField
                 control={form.control}
                 name="offerDescription"
@@ -81,6 +83,7 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="offerBanner"
