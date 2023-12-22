@@ -9,8 +9,9 @@ import CreateOffer from "./_root/pages/createOffer";
 import UserSignup from "./_auth/forms/UserSignup";
 import { RoleSelect } from "./_auth/forms/RoleSelect";
 import PaymentMethodsCard from "./_auth/forms/paymentMethod";
+import RoutesPath from "./_root/pages/RotesPath";
 
-export default function App() { 
+export default function App() {
   return (
     <>
       <main className="flex h-screen">
@@ -28,7 +29,7 @@ export default function App() {
             path="/createoffer"
             element={<CreateOffer action="Create" />}
           />
-          
+          <Route path="/searchPlace" element={<RoutesPath />} />
         </Routes>
       </main>
       <Toaster />
