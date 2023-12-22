@@ -55,7 +55,7 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
 
   return (
     <div className="flex flex-1">
-      <div className="flex flex-col flex-1 items-center gap-10 overflow-scroll py-10 px-5 md:px-8 lg:p-14">
+      <div className="flex flex-col flex-1 items-center gap-10 py-10 px-5 md:px-8 lg:p-14">
         <div className="max-w-5xl flex-start gap-3 justify-start w-full mt-10 md:mt-0">
           <div className="flex flex-row justify-start items-start mb-5">
             <img src={add} width={40} height={30} alt="add" loading="lazy" />

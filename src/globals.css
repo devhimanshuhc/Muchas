@@ -79,17 +79,4 @@
   .flex-center {
     @apply flex justify-around items-center;
   }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #212529;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #3fa7a0;
-    border-radius: 50px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #7878a3;
-  }
 }
