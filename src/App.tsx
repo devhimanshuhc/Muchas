@@ -8,9 +8,9 @@ import Home from "./_root/pages/Home";
 import CreateOffer from "./_root/pages/createOffer";
 import UserSignup from "./_auth/forms/UserSignup";
 import { RoleSelect } from "./_auth/forms/RoleSelect";
-import { PaymentMethod } from "./_auth/forms/PaymentMethod";
+import PaymentMethodsCard from "./_auth/forms/paymentMethod";
 
-export default function App() {
+export default function App() { 
   return (
     <>
       <main className="flex h-screen">
@@ -20,7 +20,7 @@ export default function App() {
             <Route path="/usersignup" element={<UserSignup />} />
             <Route path="/roles" element={<RoleSelect />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path="/payment" element={<PaymentMethod />} />
+            <Route path="/payment" element={<PaymentMethodsCard />} />
           </Route>
 
           <Route index path="/" element={<Home />} />
@@ -28,7 +28,7 @@ export default function App() {
             path="/createoffer"
             element={<CreateOffer action="Create" />}
           />
-          {/* <Route path="/payment" element={<PaymentM />} /> */}
+          
         </Routes>
       </main>
       <Toaster />
