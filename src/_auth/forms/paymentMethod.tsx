@@ -40,7 +40,6 @@ export default function PaymentMethodsCard() {
         console.log(formData)
     }
 
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-[80%] sm:w-[35%]">
@@ -103,23 +102,22 @@ export default function PaymentMethodsCard() {
                 <FormField
                     name="name"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="mt-2">
                             <FormLabel>
                                 enter your name as per the card.
                             </FormLabel>
                             <FormControl>
-                                <Input type="text" {...field} />
+                                <Input type="text" {...field}  />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-
                 <FormField
                     name="cardNumber"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="mt-2">
                             <FormLabel>
                                 Card Number
                             </FormLabel>
@@ -131,12 +129,12 @@ export default function PaymentMethodsCard() {
                     )}
                 />
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-4 mt-2">
                     <div className="grid gap-2">
                         <FormField
-                            name="expiry"
+                            name="expires"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem >
                                     <FormLabel>Expiry Date</FormLabel>
                                     <Select onValueChange={field.onChange}>
                                         <FormControl>
@@ -205,18 +203,10 @@ export default function PaymentMethodsCard() {
                             </FormItem>
                         )}
                         />
-
-                        
                     </div>
-
-
-
-
                 </div>
 
-                <Button variant="outline" type="submit" className="mt-2" >Submit</Button>
-
-
+                <Button variant="outline" type="submit" className="mt-4 px-6 text-xl font-bold" >Submit</Button>
             </form>
         </Form>
     )
