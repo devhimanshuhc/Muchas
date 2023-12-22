@@ -1,4 +1,4 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,29 +9,30 @@ import paypal from "../../../public/assets/icons/paypal.svg"
 import amazonPay from "../../../public/assets/icons/amazonpay.svg"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const paymentMethodSchema = z.object({
     paymentMethod: z.enum(["card", "amazonPay", "paypal"]),
     name: z.string().min(2, { message: "name is required." }),
-    cardNumber: z.number().max(16, { message: "your card number got to be exactly 16 digits long." }),
-    expires: z.string().min(2, { message: "expiry date is required." }),
-    year: z.number().min(2, { message: "year is required." }),
-    cvc: z.number().min(2, { message: "cvc is required." }),
+    cardNumber: z.coerce.number(),
+    expires: z.coerce.number().min(2, { message: "expiry date is required." }),
+    year: z.string().min(2, { message: "year is required." }),
+    cvc: z.coerce.number().min(2, { message: "cvc is required." }),
 })
 
 type paymentMethodFormDataTyp = z.infer<typeof paymentMethodSchema>
 
 export default function PaymentMethodsCard() {
 
-    const form = useForm({
+    const form = useForm<paymentMethodFormDataTyp>({
         resolver: zodResolver(paymentMethodSchema),
         defaultValues: {
             paymentMethod: "card",
             name: "",
             cardNumber: undefined,
-            // expires: "",
-            // year: undefined,
-            // cvc: undefined,
+            expires: undefined,
+            year: undefined,
+            cvc: undefined,
         }
     })
 
@@ -42,7 +43,7 @@ export default function PaymentMethodsCard() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-[80%] sm:w-[35%]">
                 <FormField
                     name="paymentMethod"
                     render={({ field }) => (
@@ -60,7 +61,7 @@ export default function PaymentMethodsCard() {
                                         </FormControl>
                                         <Label
                                             htmlFor="card"
-                                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                                         >
                                             <CreditCard className="w-[48px] h-[24px]" />
                                             Card
@@ -73,7 +74,7 @@ export default function PaymentMethodsCard() {
                                         </FormControl>
                                         <Label
                                             htmlFor="paypal"
-                                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                                         >
                                             <img src={paypal} alt="paypal card" className="w-[48px] h-[24px]" />
                                             paypal
@@ -86,7 +87,7 @@ export default function PaymentMethodsCard() {
                                         </FormControl>
                                         <Label
                                             htmlFor="amazonPay"
-                                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                                         >
                                             <img src={amazonPay} alt="amazon pay card" className="w-[48px] h-[24px]" />
                                             amazon pay
@@ -94,6 +95,7 @@ export default function PaymentMethodsCard() {
                                     </FormItem>
                                 </RadioGroup>
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -106,8 +108,9 @@ export default function PaymentMethodsCard() {
                                 enter your name as per the card.
                             </FormLabel>
                             <FormControl>
-                                <Input type="text" />
+                                <Input type="text" {...field} />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -121,22 +124,97 @@ export default function PaymentMethodsCard() {
                                 Card Number
                             </FormLabel>
                             <FormControl>
-                                <Input type="number" />
+                                <Input type="number" {...field} />
                             </FormControl>
-
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                {/* <FormField 
-                 name="expries"
-                 render={({field}) => (
+                <div className="grid grid-cols-3 gap-4">
+                    <div className="grid gap-2">
+                        <FormField
+                            name="expiry"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Expiry Date</FormLabel>
+                                    <Select onValueChange={field.onChange}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Month" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="1">January</SelectItem>
+                                            <SelectItem value="2">February</SelectItem>
+                                            <SelectItem value="3">March</SelectItem>
+                                            <SelectItem value="4">April</SelectItem>
+                                            <SelectItem value="5">May</SelectItem>
+                                            <SelectItem value="6">June</SelectItem>
+                                            <SelectItem value="7">July</SelectItem>
+                                            <SelectItem value="8">August</SelectItem>
+                                            <SelectItem value="9">September</SelectItem>
+                                            <SelectItem value="10">October</SelectItem>
+                                            <SelectItem value="11">November</SelectItem>
+                                            <SelectItem value="12">December</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
-                 )}
-                /> */}
+                    <div className="grid gap-2">
+                        <FormField
+                            name="year"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Year</FormLabel>
+                                    <Select onValueChange={field.onChange}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Year" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {Array.from({ length: 10 }, (_, i) => (
+                                                <SelectItem key={i} value={`${new Date().getFullYear() + i}`}>
+                                                    {new Date().getFullYear() + i}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <FormField 
+                        name="cvc"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>CVC</FormLabel>
+                                <FormControl>
+                                    <Input type="number" placeholder="CVC" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+
+                        
+                    </div>
 
 
-                <Button variant="outline" type="submit">Submit</Button>
+
+
+                </div>
+
+                <Button variant="outline" type="submit" className="mt-2" >Submit</Button>
 
 
             </form>
