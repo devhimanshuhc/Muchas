@@ -30,7 +30,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { ToastAction } from "@/components/ui/toast";
 import { useUserContext } from "@/contexts/AuthContext";
-import { ModeToggle } from "@/components/mode-toggle";
 
 // => whats my formData looks like and how to know whether its valid or not.
 const formSchema = z.object({
