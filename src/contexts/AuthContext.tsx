@@ -48,7 +48,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         try {
             // the document will contain props more than the props in initVal. but thats the whole case
             // Ts looks for the subset of the props defined in the assertion.
-            const userDoc = await getCurrentUser() as GlobalUserAc
+            const userDoc = await getCurrentUser()
 
             if (userDoc) {
                 setUser({
@@ -58,7 +58,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                     email: userDoc.email,
                     avatar: userDoc.avatar,
                     isMerchant: userDoc.isMerchant,
-                    accountId: userDoc.accountId,
+                    accountId: userDoc.$id,
                 })
                 setIsAuthenticated(true)
                 return true
@@ -103,7 +103,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
 
     return (
 
-        //@ts-ignore
+        // @ts-ignore
         <authContext.Provider value={authDataStore}>
             {children}
         </authContext.Provider >

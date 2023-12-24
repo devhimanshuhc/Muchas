@@ -41,4 +41,21 @@ export type OfferTyp4Tsinference = {
     offerDescription: string,
 }
 
+// this enum reprs the set of transport modes available to reach at a specific destn.
+export enum TransportModes {
+    scooter = "scooter",
+    bicycle = "bicycle",
+    taxi = "taxi",
+    bus = "bus",
+    privateBus = "privateBus",
+    car = "car",
+    truck = "truck",
+    pedestrian = "pedestrian",
 
+}
+
+export type RouteInputTyp = {
+    origin: string,
+    destination: string,
+    transportMode: TransportModes,
+}

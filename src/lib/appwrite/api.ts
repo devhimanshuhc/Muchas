@@ -1,8 +1,7 @@
 import { ID, Query } from "appwrite";
 import { MerchantAcFormDataTyp, OfferTyp, SessionCredsTyp, OfferTyp4Tsinference } from "../types";
-import { account, appwriteConfig, avatars, databases, storage } from "./config";
+import { account, appwriteConfig, avatars, databases } from "./config";
 import { deleteFile, getFilePreview, uploadFile } from "./utils";
-import { off } from "process";
 
 export async function createMerchantAc(merchant: MerchantAcFormDataTyp) {
     try {
@@ -55,7 +54,7 @@ export async function createMerchantAc(merchant: MerchantAcFormDataTyp) {
 
     } catch (error) {
         console.error(error);
-        return error
+        return null
     }
 }
 
@@ -65,7 +64,7 @@ export async function createEmailSession(sessionCreds: SessionCredsTyp) {
         return session
     } catch (error) {
         console.error(error)
-        return error
+        return null
     }
 }
 
@@ -86,7 +85,7 @@ export async function getCurrentUser() {
 
     } catch (error) {
         console.error(error)
-        return error
+        return null
     }
 }
 
@@ -94,9 +93,11 @@ export async function createOffer(offer: OfferTyp) {
 
     try {
         const uploadedBanner = await uploadFile(offer.offerBanner[0]) as OfferTyp4Tsinference
+        
         if (!uploadedBanner) throw Error
 
         const offerBannerUrl = await getFilePreview(uploadedBanner.$id, 1000, 1000) as any
+        
         if (!offerBannerUrl) {
             await deleteFile(uploadedBanner.$id)
             throw Error
@@ -110,9 +111,12 @@ export async function createOffer(offer: OfferTyp) {
                 offerCreator: offer.creator,
                 offerBanner: offerBannerUrl,
                 offerDescription: offer.offerDescription,
-                offerBannerID: offerBannerUrl.$id,
-            }
+                offerBannerID: uploadedBanner.$id,
+            },
+
         )
+
+        console.log(offerDoc)
 
         if (!offerDoc) {
             await deleteFile(uploadedBanner.$id)
@@ -122,15 +126,13 @@ export async function createOffer(offer: OfferTyp) {
         return offerDoc   
     } catch (error) {
         console.error(error)
-        return error
+        return null
     }
 
     /* 
      WORKFLOW: 
      ✅ upload the offerBanner from the offer.
      ✅ get the uploaded file preview to be included inside the document thats gon be created raft.
-     3. create a document in the offersColl and return.
-
+     ✅ create a document in the offersColl and return.
     */
 }
-

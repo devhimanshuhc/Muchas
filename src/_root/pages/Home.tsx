@@ -7,9 +7,8 @@ export default function Home() {
 
   return (
     <>
-      <ModeToggle />
       <div className="m-2 rounded-xl w-full max-h-[20vh] bg-slate-500 text-black text-xl flex-center">
-        <div>
+        <div className="relative">
           {user.avatar ? (
             <img
               src={user.avatar}
@@ -26,6 +25,7 @@ export default function Home() {
             {user.email || "user's email here"}
           </a>
         </div>
+        <ModeToggle/>
       </div>
     </>
   );

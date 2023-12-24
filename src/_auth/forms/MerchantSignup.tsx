@@ -94,6 +94,7 @@ export default function MerchantSignup() {
         ac = await createMerchantAc({
           ...formData,
         });
+        
       }
 
       function errorCall(error: GeolocationPositionError) {
@@ -107,6 +108,7 @@ export default function MerchantSignup() {
       });
     }
 
+    
     if (!ac) {
       toast({
         title: "🚨 Something went wrong!!",
@@ -115,7 +117,6 @@ export default function MerchantSignup() {
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
 
-      return null;
     }
 
     // since we've created an Ac, next we got to signin into the newly created Ac.

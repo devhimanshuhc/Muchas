@@ -5,8 +5,6 @@ import * as z from "zod";
 import { Models } from "appwrite";
 
 import { useNavigate } from "react-router-dom";
-// import { offerSchema } from "@/lib/validation";
-// import { useToast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,
@@ -15,21 +13,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FileUploader from "@/components/shared/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
 import add from "../../../public/assets/icons/gallery-add.svg";
+import { OfferTyp } from "@/lib/types";
+import { useUserContext } from "@/contexts/AuthContext";
+import { useCreateOffersMutation } from "@/lib/query/queries";
+import { useToast } from "@/components/ui/use-toast";
 
 const offerSchema = z.object({
-  offerDescription: z.string().max(1500, {
-    message: "Hey merchant! Keep your offer description under 1500 characters.",
-  }),
-  offerBanner: z
-    .string()
-    .url()
-    .min(1, { message: "Merchant, kindly include a banner for the offer." }),
+  offerDescription: z.string().max(1500, {message: "Hey merchant! Keep your offer description under 1500 characters."}),
+  offerBanner: z.custom<File[]>(),
 });
 
 type CreateOfferProps = {
@@ -37,21 +32,54 @@ type CreateOfferProps = {
   action: "Create" | "Update";
 };
 
+type CreateOfferFormDataTyp = z.infer<typeof offerSchema>
+
 export default function CreateOffer({ post, action }: CreateOfferProps) {
-  //   const navigate = useNavigate();
+
+  const navigate = useNavigate();
+  const { toast } = useToast()
+  const { user } = useUserContext()
 
   const form = useForm({
     resolver: zodResolver(offerSchema),
     defaultValues: {
       offerDescription: "",
-      offerBanner: "",
+      offerBanner: [],
     },
   });
 
-  /*
-  TODO
-  */
-  const handleSubmit = async (value: z.infer<typeof offerSchema>) => {};
+  const { mutateAsync: createOffer, isPending: isCreatingOffer } = useCreateOffersMutation()
+
+  async function handleSubmit(formData: CreateOfferFormDataTyp) {
+
+    const offer: OfferTyp = {
+      creator: user.accountId,
+      offerBanner: formData.offerBanner,
+      offerDescription: formData.offerDescription,
+    }
+
+    let res = null
+    if (action === "Create"){
+      res = await createOffer(offer)
+      console.log(res)
+    }
+
+    if (!res) {
+      toast({
+        title: "🚨 There was a snag creating your offer 🚨",
+        description: "We ran into a glitch creating your offer. Please try again or contact support."
+      })
+    } else{
+
+      toast({
+        title: "✨Success! Your offer is now available to customers",
+        description: "Your awesome offer is now out there, ready to attract customers! ",
+      })
+
+      navigate("/")
+    }
+
+  };
 
   return (
     <div className="flex flex-1">
@@ -66,10 +94,10 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
 
           <Form {...form}>
             <form
-              //   onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-col gap-9 w-full  max-w-5xl"
             >
-              
+
               <FormField
                 control={form.control}
                 name="offerDescription"
@@ -101,14 +129,12 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
                 )}
               />
 
-              {/*TODO */}
-
               <div className="flex gap-4 items-center justify-end">
                 <Button type="button" variant="outline" className="">
                   Cancel
                 </Button>
                 <Button type="submit" variant="outline">
-                  Post
+                  {isCreatingOffer ? "Creating Offer..." : "Create Offer"}
                 </Button>
               </div>
             </form>
@@ -116,10 +142,6 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
         </div>
       </div>
     </div>
-    /* 
-         TODO: 
-         lay down the tsx portion to fill the form to create an offers.
-        */
   );
 }
 
@@ -127,6 +149,6 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
  WORKFLOW: 
   ✅ create a form schema for validation using zod.
   ✅ define your form using useForm hook from react-hook-form.
-  lay down your tsx using shad-cn components.
-  handle submit using onSubmit in your form defination and put it on appwrite cloud.
+  ✅ lay down your tsx using shad-cn components.
+  ✅ handle submit using onSubmit in your form defination and put it on appwrite cloud.
 */
