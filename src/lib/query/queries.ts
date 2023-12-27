@@ -54,9 +54,14 @@ export function useCreateOffersMutation() {
 }
 
 export function useGetRoute() {
-    return useQuery({
-        queryKey: [queryKeys.GET_ROUTE],
-        queryFn: (options: RouteInputTyp) => (getRoute(options)),
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (options: RouteInputTyp) => (getRoute(options)),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: [queryKeys.GET_ROUTE]
+            })
+        }
     })
 }
 

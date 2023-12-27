@@ -12,6 +12,8 @@ import PaymentMethodsCard from "./_auth/forms/paymentMethod";
 import RoutesPath from "./_root/pages/RoutesPath";
 import RootLayout from "./_root/RootLayout";
 import HomeMap from "./_root/pages/HomeMap";
+import Delivered from "./_root/pages/Delivered";
+import AssignedTasks from "./_root/pages/AssignedTasks";
 
 export default function App() {
   return (
@@ -25,11 +27,14 @@ export default function App() {
             <Route path="/signin" element={<Signin />} />
             <Route path="/payment" element={<PaymentMethodsCard />} />
           </Route>
+
           <Route element={<RootLayout />}>
             <Route index path="/" element={<Home />} />
             <Route path="/createoffer"element={<CreateOffer action="Create" />}/>
             <Route path="/homemap" element={<HomeMap />} />
             <Route path="/searchPlace" element={<RoutesPath />} />
+            <Route path="/delivered" element={<Delivered/>}/>
+            <Route path="/assignedtasks" element={<AssignedTasks />}/>
           </Route>
         </Routes>
       </main>
