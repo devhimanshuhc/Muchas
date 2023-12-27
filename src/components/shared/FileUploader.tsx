@@ -3,6 +3,7 @@ import { FileWithPath, useDropzone } from "react-dropzone";
 
 import { Button } from "@/components/ui/button";
 import { convertFileToUrl } from "@/lib/utils";
+import "../../globals.css";
 
 type FileUploaderProps = {
   fieldChange: (files: File[]) => void;
@@ -39,7 +40,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
             <img
               src={fileUrl}
               alt="image"
-              className="file_uploader-img"
+              className="file_uploader-img "
               loading="lazy"
             />
           </div>

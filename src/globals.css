@@ -79,4 +79,8 @@
   .flex-center {
     @apply flex justify-around items-center;
   }
+
+  .file_uploader-img {
+    @apply h-60 object-contain;
+  }
 }

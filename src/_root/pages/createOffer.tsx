@@ -23,7 +23,12 @@ import { useCreateOffersMutation } from "@/lib/query/queries";
 import { useToast } from "@/components/ui/use-toast";
 
 const offerSchema = z.object({
-  offerDescription: z.string().max(1500, {message: "Hey merchant! Keep your offer description under 1500 characters."}),
+  offerDescription: z
+    .string()
+    .max(1500, {
+      message:
+        "Hey merchant! Keep your offer description under 1500 characters.",
+    }),
   offerBanner: z.custom<File[]>(),
 });
 
@@ -32,13 +37,12 @@ type CreateOfferProps = {
   action: "Create" | "Update";
 };
 
-type CreateOfferFormDataTyp = z.infer<typeof offerSchema>
+type CreateOfferFormDataTyp = z.infer<typeof offerSchema>;
 
 export default function CreateOffer({ post, action }: CreateOfferProps) {
-
   const navigate = useNavigate();
-  const { toast } = useToast()
-  const { user } = useUserContext()
+  const { toast } = useToast();
+  const { user } = useUserContext();
 
   const form = useForm({
     resolver: zodResolver(offerSchema),
@@ -48,38 +52,38 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
     },
   });
 
-  const { mutateAsync: createOffer, isPending: isCreatingOffer } = useCreateOffersMutation()
+  const { mutateAsync: createOffer, isPending: isCreatingOffer } =
+    useCreateOffersMutation();
 
   async function handleSubmit(formData: CreateOfferFormDataTyp) {
-
     const offer: OfferTyp = {
       creator: user.accountId,
       offerBanner: formData.offerBanner,
       offerDescription: formData.offerDescription,
-    }
+    };
 
-    let res = null
-    if (action === "Create"){
-      res = await createOffer(offer)
-      console.log(res)
+    let res = null;
+    if (action === "Create") {
+      res = await createOffer(offer);
+      console.log(res);
     }
 
     if (!res) {
       toast({
         title: "🚨 There was a snag creating your offer 🚨",
-        description: "We ran into a glitch creating your offer. Please try again or contact support."
-      })
-    } else{
-
+        description:
+          "We ran into a glitch creating your offer. Please try again or contact support.",
+      });
+    } else {
       toast({
         title: "✨Success! Your offer is now available to customers",
-        description: "Your awesome offer is now out there, ready to attract customers! ",
-      })
+        description:
+          "Your awesome offer is now out there, ready to attract customers! ",
+      });
 
-      navigate("/")
+      navigate("/");
     }
-
-  };
+  }
 
   return (
     <div className="flex flex-1">
@@ -97,7 +101,6 @@ export default function CreateOffer({ post, action }: CreateOfferProps) {
               onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-col gap-9 w-full  max-w-5xl"
             >
-
               <FormField
                 control={form.control}
                 name="offerDescription"
