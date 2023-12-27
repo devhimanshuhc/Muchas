@@ -1,0 +1,28 @@
+while using the geojson data to add markers, layers on the map we're going to follow this workflow.
+ WORKFLOW: 
+ 1. get the geojson data.
+ 2. and build the object of this type
+ {
+    type: "geojson",
+    data: here goes your geojson data
+ }
+ 3. put this object up into the addSource as the second arg.
+
+ NOTE: 
+ SOME REFS FOR FUTURE USE-CASES.
+ 
+ map.addSource('some id', {
+  type: 'geojson',
+  data: {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-77.032, 38.913]
+    },
+    properties: {
+      title: 'Mapbox',
+      description: 'Washington, D.C.'
+    }
+  }
+})
+

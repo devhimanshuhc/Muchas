@@ -1,3 +1,6 @@
+import { GeoJSON } from "geojson"
+import { GeoJSONSource } from "mapbox-gl"
+
 export type MerchantAcFormDataTyp = {
     username: string,
     email: string,
@@ -59,3 +62,4 @@ export type RouteInputTyp = {
     destination: string,
     transportMode: TransportModes,
 }
+

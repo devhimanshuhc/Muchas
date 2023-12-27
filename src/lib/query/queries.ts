@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MerchantAcFormDataTyp, OfferTyp, SessionCredsTyp } from "../types";
+import { MerchantAcFormDataTyp, OfferTyp, RouteInputTyp, SessionCredsTyp } from "../types";
 import { createEmailSession, createMerchantAc, createOffer, getCurrentUser } from "../appwrite/api";
 import { queryKeys } from "./queryKeys";
+import getRoute from "../HERE/api";
 
 export function useCreateMerchantAcMutation() {
     const queryClient = useQueryClient()
@@ -51,3 +52,12 @@ export function useCreateOffersMutation() {
     ✅ cuz we've just created a offer, we need to revalidate the query to display the newly created offer in the profile and wherever its used.
     */
 }
+
+export function useGetRoute() {
+    return useQuery({
+        queryKey: [queryKeys.GET_ROUTE],
+        queryFn: (options: RouteInputTyp) => (getRoute(options)),
+    })
+}
+
+ 
